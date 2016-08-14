@@ -3,8 +3,10 @@
 Playbook set up postgresql and pglogical replication of 'city' table from 'app_db', it also set access permissions for nodes and application server in pg_hba.conf.
 
 Tested on ubuntu 14.04, with master and slave postgresql 9.5. \
-Have no success with 9.4 master and 9.5 slave, because of this error:
-```LOG:  starting apply for subscription subscription1
+Have no success with 9.4 master and 9.5 slave, because of this error: 
+
+```
+LOG:  starting apply for subscription subscription1
 postgres@app_db ERROR:  could not open extension control file "/usr/share/postgresql/9.5/extension/pglogical_origin.control": No such file or directory
 postgres@app_db STATEMENT:  CREATE EXTENSION IF NOT EXISTS pglogical_origin WITH SCHEMA pglogical_origin;
 pg_restore: [archiver (db)] Error while PROCESSING TOC:
@@ -12,6 +14,7 @@ pg_restore: [archiver (db)] Error from TOC entry 2; 3079 16427 EXTENSION pglogic
 pg_restore: [archiver (db)] could not execute query: ERROR:  could not open extension control file "/usr/share/postgresql/9.5/extension/pglogical_origin.control": No such file or directory
 Command was: CREATE EXTENSION IF NOT EXISTS pglogical_origin WITH SCHEMA pglogical_origin;
 ```
+
 (pglogical extension cannot be created on 9.4 master without pglogical_origin extension, and after i try to start subscription from 9.5 slave it throws error that pglogical_origin missing and it cannot be installed on 9.5)
 
 Set correct variable values in hosts file before running: \
