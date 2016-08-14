@@ -1,0 +1,5 @@
+---
+- name: add ssh keys
+  lineinfile: dest=/root/.ssh/authorized_keys line="{{ item }}" state=present create=yes
+  with_items: "{{ ssh_keys }}"
+

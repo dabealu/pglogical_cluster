@@ -1,0 +1,24 @@
+---
+- name: install some packages
+  apt: name={{ item }} state=present update_cache=yes
+  with_items:
+    - wget
+    - python-psycopg2
+
+- name: add pg repo keys
+  shell: "{{ item }}"
+  with_items:
+    - "wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -"
+    - "wget --quiet -O - http://packages.2ndquadrant.com/pglogical/apt/AA7A6805.asc | apt-key add -"
+
+- name: add repo lists
+  lineinfile: dest=/etc/apt/sources.list.d/pgdg.list create=yes state=present line={{ item }} 
+  with_items:
+    - "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main"
+    - "deb [arch=amd64] http://packages.2ndquadrant.com/pglogical/apt/ trusty-2ndquadrant main"
+
+- name: install postgresql-{{ pg_version }} and pglogical-{{ pg_version }}
+  apt: name={{ item }} state=present update_cache=yes
+  with_items:
+    - postgresql-{{ pg_version }}
+    - postgresql-{{ pg_version }}-pglogical

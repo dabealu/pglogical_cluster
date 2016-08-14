@@ -1,0 +1,6 @@
+- name: root ssh
+  hosts: all
+  become: yes
+  become_method: sudo
+  roles:
+    - ssh_keys

@@ -1,0 +1,6 @@
+---
+- name: upload batch template
+  template: src=psql_batch dest=/tmp/psql_batch
+
+- name: execute batch job
+  shell: psql -f /tmp/psql_batch -p {{ pg_port }} -d app_db

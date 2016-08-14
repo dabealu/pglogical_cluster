@@ -1,0 +1,43 @@
+---
+- name: install and config
+  hosts: all 
+  remote_user: root
+  roles:
+    - install
+    - config
+
+- name: restore db
+  hosts: all
+  remote_user: root
+  become: yes
+  become_user: postgres
+  become_method: su
+  roles:
+    - restore
+
+- name: prepare provider
+  hosts: pg_master
+  remote_user: root
+  become: yes
+  become_user: postgres
+  become_method: su
+  roles:
+    - provider
+
+- name: prepare subscriber
+  hosts: pg_slave
+  remote_user: root
+  become: yes
+  become_user: postgres
+  become_method: su
+  roles:
+    - subscriber
+
+- name: replication lag
+  hosts: pg_master
+  remote_user: root
+  become: yes
+  become_user: postgres
+  become_method: su
+  roles:
+    - get_lag

@@ -1,0 +1,4 @@
+CREATE EXTENSION pglogical;
+SET pglogical.conflict_resolution = 'apply_remote';
+SELECT pglogical.create_node(node_name := 'pg-master', dsn := 'host=pg-master port={{ pg_port }} dbname=app_db');
+SELECT pglogical.replication_set_add_table(set_name := 'default', relation := 'city', synchronize_data := true);

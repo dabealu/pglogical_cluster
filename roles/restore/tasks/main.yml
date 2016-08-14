@@ -1,0 +1,8 @@
+---
+- name: create db
+  postgresql_db: name=app_db port={{ pg_port }}
+
+- name: get and restore db dump
+  shell: cd /tmp && wget http://pgfoundry.org/frs/download.php/527/world-1.0.tar.gz && tar -xzf world-1.0.tar.gz && psql -p {{ pg_port }} app_db < dbsamples-0.1/world/world.sql && rm -rf dbsamples-0.1 world-1.0.tar.gz
+  when: '"{{ ansible_default_ipv4.address }}" == "{{ pg_master }}"'
+

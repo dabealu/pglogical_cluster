@@ -1,0 +1,17 @@
+[all:vars]
+pg_version=9.5
+pg_master=192.168.100.5
+pg_slave=192.168.100.6
+pg_port=5433
+pg_appaddr=192.168.100.3
+
+[pg_master]
+192.168.100.5 ansible_port=22
+
+#[pg_master:vars]
+
+[pg_slave]
+192.168.100.6 ansible_port=22 
+
+#[pg_slave:vars]
+

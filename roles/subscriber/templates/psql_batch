@@ -1,0 +1,4 @@
+CREATE EXTENSION pglogical;
+SET pglogical.conflict_resolution = 'apply_remote';
+SELECT pglogical.create_node(node_name := 'pg-slave', dsn := 'host=pg-slave port={{ pg_port }} dbname=app_db');
+SELECT pglogical.create_subscription(subscription_name := 'subscription1', provider_dsn := 'host=pg-master port={{ pg_port }} dbname=app_db', synchronize_structure := true);
