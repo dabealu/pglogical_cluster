@@ -2,7 +2,7 @@
 
 Playbook set up postgresql and pglogical replication of 'city' table from 'app_db', it also set access permissions for nodes and application server in pg_hba.conf.
 
-Tested on ubuntu 14.04, with master and slave postgresql 9.5.
+Tested on ubuntu 14.04, with master and slave postgresql 9.5.  
 Have no success with 9.4 master and 9.5 slave, because of this error: 
 
 ```
@@ -15,14 +15,15 @@ pg_restore: [archiver (db)] could not execute query: ERROR:  could not open exte
 Command was: CREATE EXTENSION IF NOT EXISTS pglogical_origin WITH SCHEMA pglogical_origin;
 ```
 
-(pglogical extension cannot be created on 9.4 master without pglogical_origin extension, and after i try to start subscription from 9.5 slave it throws error that pglogical_origin missing and it cannot be installed on 9.5)
+NOTE: pglogical extension cannot be created on 9.4 master without pglogical_origin extension, and after i try to start subscription from 9.5 slave it throws error that pglogical_origin missing and it cannot be installed on 9.5 and even when pglogical_origin.control copied to 9.5 slave then another error raised:  
+ERROR:  pglogical_origin can only be installed into PostgreSQL 9.4
 
-Set correct variable values in hosts file before running:
-pg_version - postgresql server version
-pg_master - master (provider) node ip address
-pg_slave - slave (subscriber) node ip address
-pg_port - postgresql server port
-pg_appaddr - ip from which application will access db servers (trust access to 'app_db' for 'postgres' user)
+Set correct variable values in hosts file before running:  
+pg_version - postgresql server version  
+pg_master - master (provider) node ip address  
+pg_slave - slave (subscriber) node ip address  
+pg_port - postgresql server port  
+pg_appaddr - ip from which application will access db servers (trust access to 'app_db' for 'postgres' user)  
 You also may want to add your public key(s) to roles/ssh_keys/vars/main.yml for passwordless root access.
 
 Add root ssh public key for passwordless access (separate playbook):

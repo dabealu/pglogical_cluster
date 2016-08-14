@@ -14,12 +14,16 @@
     - "max_replication_slots = 10"
     - "max_wal_senders = 10"
     - "shared_preload_libraries = 'pglogical'"
+  notify:
+    - restart_pg
 
 - name: edit listen adress
   lineinfile: dest=/etc/postgresql/{{ pg_version}}/main/postgresql.conf regexp={{ item.re }} line={{ item.line }}
   with_items:
     - { re: ".*listen_addresses = .*", line: "listen_addresses = '*'" }
     - { re: "^port = .*", line: "port = {{ pg_port }}" }
+  notify:
+    - restart_pg
 
 - name: edit pg_hba.conf
   lineinfile: dest=/etc/postgresql/{{ pg_version}}/main/pg_hba.conf line={{ item }}
@@ -29,6 +33,5 @@
     - "host    app_db          postgres        pg-slave                trust"
     - "host    app_db          postgres        pg-master               trust"
     - "host    app_db          postgres        pg-app                  trust"
-
-- name: restart pg
-  service: name=postgresql state=restarted
+  notify:
+    - restart_pg
